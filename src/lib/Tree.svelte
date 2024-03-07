@@ -6,33 +6,31 @@
 </li>
 </ul>
 </div>
+<script lang="ts">
+	import { onMount } from 'svelte';
+
+	onMount(() => {
+		let nodes = document.querySelector('.tree')?.querySelector('ul')?.querySelector('li')?.querySelectorAll('.node');
+		
+		// Convert nodes to a list
+		nodes?.forEach((node: Element) => {
+			if (node instanceof HTMLElement) {
+				node.ondrop = function(event: DragEvent) {
+					event.preventDefault();
+					var data = event.dataTransfer?.getData("content");
+					console.log("an element as been droped : ",data);
+					if (data && event.target instanceof HTMLElement) {
+						event.target.textContent = data;
+					}
+				}
+				node.ondragover = function(event: DragEvent) {
+					event.preventDefault();
+				}
+			}
+		});
+	});
 
 
-<script>
-  import { onMount } from 'svelte';
-
-  onMount(() => {
-    let nodes = document.querySelector('.tree').querySelector('ul').querySelector('li')?.querySelectorAll('.node');
-	
-	// Convert nodes to a list
-    nodes.forEach(node => {
-      node.ondrop = function(event) {
-		event.preventDefault();
-		var data = event.dataTransfer.getData("content");
-		event.target.textContext = data;
-	  }
-	  node.ondragover = function(event) {
-	  }
-    });
-  });
-
-  function drop(event) {
-	// playsound
-	event.preventDefault();
-	var data = event.dataTransfer.getData("number");
-	event.target.textContext = data;
-	// calc
-  }
 </script>
 
 <style>

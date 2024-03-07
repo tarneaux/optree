@@ -4,10 +4,20 @@ import Tree from '$lib/Tree.svelte';
 import { onMount } from 'svelte';
 
 onMount(() => {
-    let droppables = document.querySelectorAll("droppables").forEach((droppable) => {
+    let droppables = document.querySelectorAll(".droppables").forEach((droppable) => {
         Array.from(droppable.children).forEach((el) => {
             el.addEventListener("dragstart", (event) => {
-                event.target.dataTransfer.setData("content", event.target.textContext)
+                // Assurez-vous que l'événement est un DragEvent
+                if (event instanceof DragEvent) {
+                    // Vérifiez si event.target est null et si c'est un HTMLElement
+                    if (event.target && event.target instanceof HTMLElement) {
+                        // Vérifiez si dataTransfer n'est pas null
+                        if (event.dataTransfer) {
+                            event.dataTransfer.setData("content", event.target.textContent || '')
+                            console.log("an element as been dragged : ",event.target.textContent)
+                        }
+                    }
+                }
             })
         })
     })
@@ -16,29 +26,21 @@ onMount(() => {
 
 
 
-
-
 <div class="tree-container">
     <div class="droppables">
-        <div class="number"  draggable="true">1</div>
-        <div class="number"  draggable="true">0</div>
-        <div class="number"  draggable="true">2</div>
-        <div class="number"  draggable="true">3</div>
-        <div class="number"  draggable="true">4</div>
-        <div class="number"  draggable="true">5</div>
-        <div class="number"  draggable="true">6</div>
-        <div class="number"  draggable="true">7</div>
-        <div class="number"  draggable="true">8</div>
-        <div class="number"  draggable="true">9</div>
+        {#each Array.from(Array(10).keys()) as number}
+            <div class="number" draggable="true">{number}</div>
+        {/each}
     </div>
     <div class="droppables">
-        <div class="operator" id="plus" draggable="true">+</div>
-        <div class="operator" id="minus" draggable="true">-</div>
-        <div class="operator" id="multiply" draggable="true">*</div>
-        <div class="operator" id="divide" draggable="true">/</div>
+        {#each ['+', '-', '*', '/'] as operator}
+            <div class="operator" id={operator} draggable="true">{operator}</div>
+        {/each}
     </div>
-<Tree />
+    <Tree />
 </div>
+
+
 
 <style>
 .tree-container {
