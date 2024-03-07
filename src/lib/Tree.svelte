@@ -1,49 +1,52 @@
 <div class="tree">
-	<ul>
-		<li>
-			<div class="node">1</div>
-			<ul>
-				<li>
-                    <div class="node">2</div>
-                    <ul>
-                        <li>
-                            <div class="node">2.1</div>
-                        </li>
-                        <li>
-                            <div class="node">2.2</div>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <div class="node">3</div>
-                    <ul>
-                        <ul>
-                            <li>
-                                <div class="node">3.1</div>
-                                <ul>
-                                    <li>
-                                        <div class="node">3.1.1</div>
-                                    </li>
-                                    <li>
-                                        <div class="node">3.1.2</div>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <div class="node">3.2</div>
-                            </li>
-                        </ul>
-                    </ul>
-                </li>
-            </ul>
-		</li>
-	</ul>
+<ul>
+<li>
+<div class="node"></div>
+	<ul><li><div class="node"></div><ul><li><div class="node"></div><ul><li><div class="node"></div><ul><li><div class="node"></div></li><li><div class="node"></div></li></ul></li><li><div class="node"></div><ul><li><div class="node"></div></li><li><div class="node"></div></li></ul></li></ul></li><li><div class="node"></div><ul><li><div class="node"></div><ul><li><div class="node"></div></li><li><div class="node"></div></li></ul></li><li><div class="node"></div><ul><li><div class="node"></div></li><li><div class="node"></div></li></ul></li></ul></li></ul></li><li><div class="node"></div><ul><li><div class="node"></div><ul><li><div class="node"></div><ul><li><div class="node"></div></li><li><div class="node"></div></li></ul></li><li><div class="node"></div><ul><li><div class="node"></div></li><li><div class="node"></div></li></ul></li></ul></li><li><div class="node"></div><ul><li><div class="node"></div><ul><li><div class="node"></div></li><li><div class="node"></div></li></ul></li><li><div class="node"></div><ul><li><div class="node"></div></li><li><div class="node"></div></li></ul></li></ul></li></ul></li></ul>
+</li>
+</ul>
 </div>
 
+
+<script>
+  import { onMount } from 'svelte';
+
+  onMount(() => {
+    let nodes = document.querySelector('.tree').querySelector('ul').querySelector('li')?.querySelectorAll('.node');
+	
+	// Convert nodes to a list
+    nodes.forEach(node => {
+      node.ondrop = function(event) {
+		event.preventDefault();
+		var data = event.dataTransfer.getData("content");
+		event.target.textContext = data;
+	  }
+	  node.ondragover = function(event) {
+	  }
+    });
+  });
+
+  function drop(event) {
+	// playsound
+	event.preventDefault();
+	var data = event.dataTransfer.getData("number");
+	event.target.textContext = data;
+	// calc
+  }
+</script>
+
 <style>
+
 * {margin: 0; padding: 0;}
 
+.tree{
+  width: max-content;
+  overflow: hidden;
+
+}
+
 .tree ul {
+  
 	padding-top: 20px; position: relative;
 	
 	transition: all 0.5s;
@@ -130,14 +133,14 @@ right connector from last child*/
 
 /*Time for some hover effects*/
 /*We will apply the hover effect the the lineage of the element also*/
-.tree li a:hover, .tree li a:hover+ul li a {
+.tree li .node:hover, .tree li .node:hover+ul li .node {
 	background: #c8e4f8; color: #000; border: 1px solid #94a0b4;
 }
 /*Connector styles on hover*/
-.tree li a:hover+ul li::after, 
-.tree li a:hover+ul li::before, 
-.tree li a:hover+ul::before, 
-.tree li a:hover+ul ul::before{
+.tree li .node:hover+ul li::after, 
+.tree li .node:hover+ul li::before, 
+.tree li .node:hover+ul::before, 
+.tree li .node:hover+ul ul::before{
 	border-color:  #94a0b4;
 }
 </style>
