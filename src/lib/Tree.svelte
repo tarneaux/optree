@@ -8,30 +8,51 @@
 </div>
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import calculate from '../routes/calculate.svelte';
 
 	onMount(() => {
 		let nodes = document.querySelector('.tree')?.querySelector('ul')?.querySelector('li')?.querySelectorAll('.node');
-		
-		// Convert nodes to a list
+		let root = document.querySelector('.tree')?.querySelector('ul')?.querySelector('li')?.querySelector('.node')
 		nodes?.forEach((node: Element) => {
 			if (node instanceof HTMLElement) {
 				node.ondrop = function(event: DragEvent) {
 					event.preventDefault();
 					var data = event.dataTransfer?.getData("content");
-					console.log("an element as been droped : ",data);
-					if (data && event.target instanceof HTMLElement) {
-						event.target.textContent = data;
+					if (data === undefined) {
+						return;
 					}
-				}
+					var previousElement = node.parentElement?.parentElement?.parentElement?.firstChild;
+					if (previousElement instanceof Element && !previousElement.classList.contains('.node') && ["+", "-", "*", "/"].includes(data)) {
+						if (event.target instanceof HTMLElement) {
+							event.target.textContent = data;
+							if (root instanceof Element) {
+								new calculate({ target: root });
+							}
+						}
+						return;
+					}
+					if (previousElement instanceof Element && previousElement.textContent !== null && ["+", "-", "*", "/"].includes(previousElement.textContent)) {
+						if (event.target instanceof HTMLElement) {
+							event.target.textContent = data;
+							
+							if (root instanceof Element) {
+								new calculate({ target: root });
+							}	
+						}
+						return;
+					}
+					else {
+						console.log("Vous ne pouvez pas déposer un nombre ici sans une opération au-dessus de lui.");
+					}
+				};
 				node.ondragover = function(event: DragEvent) {
 					event.preventDefault();
-				}
+				};
 			}
 		});
 	});
-
-
 </script>
+
 
 <style>
 

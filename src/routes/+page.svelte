@@ -1,6 +1,5 @@
 <script>
 import Tree from '$lib/Tree.svelte';
-
 import { onMount } from 'svelte';
 
 onMount(() => {
