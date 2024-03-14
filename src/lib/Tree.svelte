@@ -8,11 +8,10 @@
 </div>
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import calculate from './calculate.svelte';
+	import calculateAndShow from './calculate.ts';
 
 	onMount(() => {
 		let nodes = document.querySelector('.tree')?.querySelector('ul')?.querySelector('li')?.querySelectorAll('.node');
-		let root = document.querySelector('.tree')?.querySelector('ul')?.querySelector('li')?.querySelector('.node')
 		nodes?.forEach((node: Element) => {
 			if (node instanceof HTMLElement) {
 				node.ondrop = function(event: DragEvent) {
@@ -25,9 +24,7 @@
 					if (previousElement instanceof Element && !previousElement.classList.contains('.node') && ["+", "-", "*", "/"].includes(data)) {
 						if (event.target instanceof HTMLElement) {
 							event.target.textContent = data;
-							if (root instanceof Element) {
-								new calculate({ target: root });
-							}
+                            calculateAndShow();
 						}
 						return;
 					}
@@ -35,9 +32,7 @@
 						if (event.target instanceof HTMLElement) {
 							event.target.textContent = data;
 							
-							if (root instanceof Element) {
-								new calculate({ target: root });
-							}	
+                            calculateAndShow();
 						}
 						return;
 					}

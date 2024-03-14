@@ -28,15 +28,23 @@ onMount(() => {
 <div class="tree-container">
     <div class="droppables">
         {#each Array.from(Array(10).keys()) as number}
-            <div class="number" draggable="true">{number}</div>
+            <div class="box" draggable="true">{number}</div>
         {/each}
     </div>
     <div class="droppables">
         {#each ['+', '-', '*', '/'] as operator}
-            <div class="operator" id={operator} draggable="true">{operator}</div>
+            <div class="box" id={operator} draggable="true">{operator}</div>
         {/each}
     </div>
     <Tree />
+    <div />
+    <div>
+        <p class="box">
+            Résultat :
+            <span id="result">
+            </span>
+        </p>
+    </div>
 </div>
 
 
@@ -47,17 +55,10 @@ onMount(() => {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
-}
-.number {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    margin-right: 10px;
-    cursor: pointer;
+    gap: 10px;
 }
 
-.operator {
+.box {
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 10px;
@@ -68,6 +69,5 @@ onMount(() => {
 .droppables {
     display: flex;
     flex-direction: row;
-    margin: 10px;
 }
 </style>
