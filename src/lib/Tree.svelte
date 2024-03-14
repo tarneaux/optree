@@ -8,7 +8,7 @@
 </div>
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import calculate from '../routes/calculate.svelte';
+	import calculate from './calculate.svelte';
 
 	onMount(() => {
 		let nodes = document.querySelector('.tree')?.querySelector('ul')?.querySelector('li')?.querySelectorAll('.node');
