@@ -1,9 +1,6 @@
-import { onMount } from 'svelte';
-
 function calculate(node: Element): number {
-
-    let leftChild = node.nextElementSibling?.firstChild?.firstChild;
-    let rightChild = node.nextElementSibling?.firstChild?.nextSibling?.firstChild;
+    const leftChild = node.nextElementSibling?.firstChild?.firstChild;
+    const rightChild = node.nextElementSibling?.firstChild?.nextSibling?.firstChild;
 
     if (leftChild instanceof Element && rightChild instanceof Element) {
         let leftValue: number;
