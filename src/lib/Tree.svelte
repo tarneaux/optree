@@ -10,8 +10,38 @@
 	import { onMount } from 'svelte';
 	import calculateAndShow from './calculate.ts';
 
+    function parentSibling(node: Element): Element | null {
+        return node.parentElement?.parentElement?.parentElement?.firstChild;
+    }
+
+    function elIsNode(el: Element): boolean {
+        return el.classList.contains('node');
+    }
+
+    function greyOutNodes(nodes) {
+        console.log("greyOutNodes");
+        console.log(nodes);
+        nodes.forEach((node: Element) => {
+            if (node instanceof HTMLElement) {
+                let ps = parentSibling(node);
+                if (ps instanceof Element && elIsNode(ps) && !["+", "-", "*", "/"].includes(ps.textContent)) {
+                    node.style.borderColor = "red";
+                    node.style.backgroundColor = "lightpink";
+                    node.textContent = " ";
+                } else {
+                    node.style.backgroundColor = "white";
+                    node.style.borderColor = "black";
+                }
+                if (node.textContent === "") {
+                    node.textContent = " ";
+                }
+            }
+        });
+    }
+
 	onMount(() => {
-		let nodes = document.querySelector('.tree')?.querySelector('ul')?.querySelector('li')?.querySelectorAll('.node');
+		const nodes = document.querySelector('.tree')?.querySelector('ul')?.querySelector('li')?.querySelectorAll('.node');
+        greyOutNodes(nodes);
 		nodes?.forEach((node: Element) => {
 			if (node instanceof HTMLElement) {
 				node.ondrop = function(event: DragEvent) {
@@ -20,22 +50,16 @@
 					if (data === undefined) {
 						return;
 					}
-					var previousElement = node.parentElement?.parentElement?.parentElement?.firstChild;
-					if (previousElement instanceof Element && !previousElement.classList.contains('.node') && ["+", "-", "*", "/"].includes(data)) {
-						if (event.target instanceof HTMLElement) {
-							event.target.textContent = data;
-                            calculateAndShow();
-						}
-						return;
-					}
-					if (previousElement instanceof Element && previousElement.textContent !== null && ["+", "-", "*", "/"].includes(previousElement.textContent)) {
-						if (event.target instanceof HTMLElement) {
-							event.target.textContent = data;
-							
-                            calculateAndShow();
-						}
-						return;
-					}
+                    if (event.target instanceof HTMLElement) {
+                        if (event.target.style.backgroundColor !== "white") {
+                            console.log("Vous ne pouvez pas déposer un nombre ici sans une opération au-dessus de lui.");
+                            return;
+                        }
+                        event.target.textContent = data;
+                        greyOutNodes(nodes);
+                        try {calculateAndShow();} catch (e) {console.log(e);}
+                        return;
+                    }
 					else {
 						console.log("Vous ne pouvez pas déposer un nombre ici sans une opération au-dessus de lui.");
 					}
@@ -84,12 +108,12 @@
 .tree li::before, .tree li::after{
 	content: '';
 	position: absolute; top: 0; right: 50%;
-	border-top: 1px solid #ccc;
+	border-top: 1px solid black;
 	width: 50%; height: 20px;
 }
 .tree li::after{
 	right: auto; left: 50%;
-	border-left: 1px solid #ccc;
+	border-left: 1px solid black;
 }
 
 /*We need to remove left-right connectors from elements without 
@@ -108,7 +132,7 @@ right connector from last child*/
 }
 /*Adding back the vertical connector to the last nodes*/
 .tree li:last-child::before{
-	border-right: 1px solid #ccc;
+	border-right: 1px solid black;
 	border-radius: 0 5px 0 0;
 	-webkit-border-radius: 0 5px 0 0;
 	-moz-border-radius: 0 5px 0 0;
@@ -123,7 +147,7 @@ right connector from last child*/
 .tree ul ul::before{
 	content: '';
 	position: absolute; top: 0; left: 50%;
-	border-left: 1px solid #ccc;
+	border-left: 1px solid black;
 	width: 0; height: 20px;
 }
 
@@ -131,30 +155,21 @@ right connector from last child*/
 	border: 1px solid #ccc;
 	padding: 5px 10px;
 	text-decoration: none;
-	color: #666;
-	font-family: arial, verdana, tahoma;
-	font-size: 11px;
+	font-size: 1.5rem;
 	display: inline-block;
 	
 	border-radius: 5px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
+
+    border-width: 2px;
+    border-color: black;
 	
 	transition: all 0.5s;
 	-webkit-transition: all 0.5s;
 	-moz-transition: all 0.5s;
-}
 
-/*Time for some hover effects*/
-/*We will apply the hover effect the the lineage of the element also*/
-.tree li .node:hover, .tree li .node:hover+ul li .node {
-	background: #c8e4f8; color: #000; border: 1px solid #94a0b4;
-}
-/*Connector styles on hover*/
-.tree li .node:hover+ul li::after, 
-.tree li .node:hover+ul li::before, 
-.tree li .node:hover+ul::before, 
-.tree li .node:hover+ul ul::before{
-	border-color:  #94a0b4;
+    width: 1.5em;
+    height: 1.5em;
 }
 </style>

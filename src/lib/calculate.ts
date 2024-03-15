@@ -1,46 +1,26 @@
 function calculate(node: Element): number {
-    const leftChild = node.nextElementSibling?.firstChild?.firstChild;
-    const rightChild = node.nextElementSibling?.firstChild?.nextSibling?.firstChild;
-
-    if (leftChild instanceof Element && rightChild instanceof Element) {
-        let leftValue: number;
-        let rightValue: number;
-
-        if (leftChild.textContent && ["+", "-", "*", "/"].includes(leftChild.textContent)) {
-            leftValue = calculate(leftChild);
-        } else if (leftChild.textContent) {
-            leftValue = parseFloat(leftChild.textContent);
-        } else {
-            throw new Error('Left child has no value');
-        }
-
-        if (rightChild.textContent && ["+", "-", "*", "/"].includes(rightChild.textContent)) {
-            rightValue = calculate(rightChild);
-        } else if (rightChild.textContent) {
-            rightValue = parseFloat(rightChild.textContent);
-        } else {
-            throw new Error('Right child has no value');
-        }
-
-        if (node.textContent) {
+    if (!node.textContent) {
+        throw new Error('Node has no value');
+    }
+    if (!["+", "-", "*", "/"].includes(node.textContent)) {
+        return parseFloat(node.textContent);
+    } else {
+        const leftChild = node.nextElementSibling?.firstChild?.firstChild;
+        const rightChild = node.nextElementSibling?.firstChild?.nextSibling?.firstChild;
+        if (leftChild instanceof Element && rightChild instanceof Element) {
             switch (node.textContent) {
                 case '+':
-                    return leftValue + rightValue;
+                    return calculate(leftChild) + calculate(rightChild);
                 case '-':
-                    return leftValue - rightValue;
+                    return calculate(leftChild) - calculate(rightChild);
                 case '*':
-                    return leftValue * rightValue;
+                    return calculate(leftChild) * calculate(rightChild);
                 case '/':
-                    return leftValue / rightValue;
-                default:
-                    throw new Error(`Unknown operator: ${node.textContent}`);
+                    return calculate(leftChild) / calculate(rightChild);
             }
         } else {
-            throw new Error('Node has no operator');
+            throw new Error('Node has no children');
         }
-    } else {
-
-        throw new Error('Node has no children or children are not elements');
     }
 }
 
