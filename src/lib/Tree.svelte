@@ -26,7 +26,6 @@
     }
 
     function greyOutNode(node: HTMLElement) {
-        console.log("greyOutNode", node);
         let should = shouldBeGreyedOut(node);
         if (should) {
             node.style.borderColor = "red";
