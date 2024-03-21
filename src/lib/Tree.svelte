@@ -39,42 +39,47 @@
         }
     }
 
-	onMount(() => {
+    function setupEventListeners(node: Element) {
+        if (!(node instanceof HTMLElement)) {
+            throw new Error("node is not an HTMLElement");
+        }
+        node.ondrop = onDrop;
+        node.ondragover = function(event: DragEvent) {
+            event.preventDefault();
+        };
+    }
+
+    function onDrop(event: DragEvent) {
+        event.preventDefault();
+        var data = event.dataTransfer?.getData("content");
+        if (data === undefined) {
+            throw new Error("data is undefined");
+        }
+        if (!(event.target instanceof HTMLElement)) {
+            throw new Error("event.target is not an HTMLElement");
+        }
+        if (event.target.style.backgroundColor !== "white") {
+            console.log("Node background is not white");
+            return;
+        }
+        event.target.textContent = data;
+        getNodes().forEach(greyOutNode);
         calculateAndShow();
-		const nodes = document.querySelector('.tree')?.querySelector('ul')?.querySelector('li')?.querySelectorAll('.node');
+    };
+
+    function getNodes() {
+        const nodes = document.querySelector('.tree')?.querySelector('ul')?.querySelector('li')?.querySelectorAll('.node');
         if (nodes === undefined) {
             throw new Error("nodes is undefined");
         }
+        return nodes;
+    }
+
+	onMount(() => {
+        const nodes = getNodes();
+        calculateAndShow();
         nodes.forEach(greyOutNode);
-		nodes?.forEach((node: Element) => {
-			if (node instanceof HTMLElement) {
-				node.ondrop = function(event: DragEvent) {
-					event.preventDefault();
-					var data = event.dataTransfer?.getData("content");
-					if (data === undefined) {
-						return;
-					}
-                    if (event.target instanceof HTMLElement) {
-                        console.log(event.target.style.backgroundColor);
-                        if (event.target.style.backgroundColor !== "white") {
-                            console.log("Vous ne pouvez pas déposer un nombre ici sans une opération au-dessus de lui.");
-                            return;
-                        }
-                        event.target.textContent = data;
-                        nodes.forEach(greyOutNode);
-                        calculateAndShow();
-                        return;
-                    }
-					else {
-						console.log("Vous ne pouvez pas déposer un nombre ici sans une opération au-dessus de lui.");
-                        console.log(event.target);
-					}
-				};
-				node.ondragover = function(event: DragEvent) {
-					event.preventDefault();
-				};
-			}
-		});
+		nodes.forEach(setupEventListeners);
 	});
 </script>
 
