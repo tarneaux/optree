@@ -1,21 +1,15 @@
 <script>
 import Tree from '$lib/Tree.svelte';
 import { onMount } from 'svelte';
+import { operators } from '../lib/calculate.ts';
 
 onMount(() => {
-    let droppables = document.querySelectorAll(".droppables").forEach((droppable) => {
+    document.querySelectorAll(".droppables").forEach((droppable) => {
         Array.from(droppable.children).forEach((el) => {
             el.addEventListener("dragstart", (event) => {
-                // Assurez-vous que l'événement est un DragEvent
-                if (event instanceof DragEvent) {
-                    // Vérifiez si event.target est null et si c'est un HTMLElement
-                    if (event.target && event.target instanceof HTMLElement) {
-                        // Vérifiez si dataTransfer n'est pas null
-                        if (event.dataTransfer) {
-                            event.dataTransfer.setData("content", event.target.textContent || '')
-                            console.log("an element as been dragged : ",event.target.textContent)
-                        }
-                    }
+                if (event instanceof DragEvent && event.target && event.target instanceof HTMLElement && event.dataTransfer) {
+                    event.dataTransfer.setData("content", event.target.textContent || '')
+                    console.log("an element as been dragged : ",event.target.textContent)
                 }
             })
         })
@@ -32,18 +26,14 @@ onMount(() => {
         {/each}
     </div>
     <div class="droppables">
-        {#each ['+', '-', '*', '/'] as operator}
-            <div class="box" id={operator} draggable="true">{operator}</div>
+        {#each operators as operator}
+            <div class="box" draggable="true">{operator}</div>
         {/each}
     </div>
     <Tree />
     <div />
     <div>
-        <p class="box">
-            Résultat :
-            <span id="result">
-            </span>
-        </p>
+        <p class="box" id="result" />
     </div>
 </div>
 

@@ -8,40 +8,44 @@
 </div>
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import calculateAndShow from './calculate.ts';
+	import { calculateAndShow, operators } from './calculate.ts';
 
-    function parentSibling(node: Element): Element | null {
-        return node.parentElement?.parentElement?.parentElement?.firstChild;
+    function parentFirstChild(node: Element): Element | null {
+        let firstChild = node.parentElement?.parentElement?.parentElement?.firstChild;
+        if (firstChild instanceof Element) {
+            return firstChild;
+        }
+        return null;
     }
 
     function elIsNode(el: Element): boolean {
         return el.classList.contains('node');
     }
 
-    function greyOutNodes(nodes) {
-        console.log("greyOutNodes");
-        console.log(nodes);
-        nodes.forEach((node: Element) => {
-            if (node instanceof HTMLElement) {
-                let ps = parentSibling(node);
-                if (ps instanceof Element && elIsNode(ps) && !["+", "-", "*", "/"].includes(ps.textContent)) {
-                    node.style.borderColor = "red";
-                    node.style.backgroundColor = "lightpink";
-                    node.textContent = " ";
-                } else {
-                    node.style.backgroundColor = "white";
-                    node.style.borderColor = "black";
-                }
-                if (node.textContent === "") {
-                    node.textContent = " ";
-                }
+    function greyOutNode(node: Element) {
+        if (node instanceof HTMLElement) {
+            let ps = parentFirstChild(node);
+            if (ps instanceof Element && elIsNode(ps) && ps.textContent !== null && !operators.includes(ps.textContent)) {
+                node.style.borderColor = "red";
+                node.style.backgroundColor = "lightpink";
+                node.textContent = " ";
+            } else {
+                node.style.backgroundColor = "white";
+                node.style.borderColor = "black";
             }
-        });
+            if (node.textContent === "") {
+                node.textContent = " ";
+            }
+        }
     }
 
 	onMount(() => {
+        calculateAndShow();
 		const nodes = document.querySelector('.tree')?.querySelector('ul')?.querySelector('li')?.querySelectorAll('.node');
-        greyOutNodes(nodes);
+        if (nodes === undefined) {
+            throw new Error("nodes is undefined");
+        }
+        nodes.forEach(greyOutNode);
 		nodes?.forEach((node: Element) => {
 			if (node instanceof HTMLElement) {
 				node.ondrop = function(event: DragEvent) {
@@ -51,17 +55,19 @@
 						return;
 					}
                     if (event.target instanceof HTMLElement) {
+                        console.log(event.target.style.backgroundColor);
                         if (event.target.style.backgroundColor !== "white") {
                             console.log("Vous ne pouvez pas déposer un nombre ici sans une opération au-dessus de lui.");
                             return;
                         }
                         event.target.textContent = data;
-                        greyOutNodes(nodes);
-                        try {calculateAndShow();} catch (e) {console.log(e);}
+                        nodes.forEach(greyOutNode);
+                        calculateAndShow();
                         return;
                     }
 					else {
 						console.log("Vous ne pouvez pas déposer un nombre ici sans une opération au-dessus de lui.");
+                        console.log(event.target);
 					}
 				};
 				node.ondragover = function(event: DragEvent) {
