@@ -10,7 +10,7 @@
 	import { onMount } from 'svelte';
 	import { calculateAndShow, operators } from './calculate.ts';
 
-    function parentFirstChild(node: Element): Element | null {
+    function getParentNode(node: Element): Element | null {
         let firstChild = node.parentElement?.parentElement?.parentElement?.firstChild;
         if (firstChild instanceof Element) {
             return firstChild;
@@ -18,24 +18,46 @@
         return null;
     }
 
-    function elIsNode(el: Element): boolean {
+    function elIsNode(el: Element | undefined | null): boolean {
+        if (el === undefined || el === null) {
+            return false;
+        }
         return el.classList.contains('node');
     }
 
-    function greyOutNode(node: Element) {
+    function greyOutNode(node: HTMLElement) {
+        console.log("greyOutNode", node);
+        let should = shouldBeGreyedOut(node);
+        if (should) {
+            node.style.borderColor = "red";
+            node.style.backgroundColor = "lightpink";
+            node.textContent = " ";
+        } else {
+            node.style.backgroundColor = "white";
+            node.style.borderColor = "black";
+            if (node.textContent === " ") {
+                node.textContent = "";
+            }
+        }
+    }
+
+    function shouldBeGreyedOut(node: Element): boolean {
         if (node instanceof HTMLElement) {
-            let ps = parentFirstChild(node);
-            if (ps instanceof Element && elIsNode(ps) && ps.textContent !== null && !operators.includes(ps.textContent)) {
-                node.style.borderColor = "red";
-                node.style.backgroundColor = "lightpink";
-                node.textContent = " ";
-            } else {
-                node.style.backgroundColor = "white";
-                node.style.borderColor = "black";
+            let parent = getParentNode(node);
+            if (parent instanceof Element && elIsNode(parent) && parent.textContent !== null && !operators.includes(parent.textContent)) {
+                return true;
             }
-            if (node.textContent === "") {
-                node.textContent = " ";
-            }
+        }
+        return false;
+    }
+
+    function isGreyedOut(node: HTMLElement): boolean | undefined {
+        if (node.style.backgroundColor === "lightpink") {
+            return true;
+        } else if (node.style.backgroundColor === "white") {
+            return false;
+        } else {
+            return undefined;
         }
     }
 
@@ -55,31 +77,29 @@
         if (data === undefined) {
             throw new Error("data is undefined");
         }
-        if (!(event.target instanceof HTMLElement)) {
-            throw new Error("event.target is not an HTMLElement");
-        }
-        if (event.target.style.backgroundColor !== "white") {
-            console.log("Node background is not white");
+        let target = event.target as HTMLElement;
+        if (isGreyedOut(target)) {
+            console.log("Cannot drop here, node is greyed out");
             return;
         }
-        event.target.textContent = data;
+        target.textContent = data;
         getNodes().forEach(greyOutNode);
         calculateAndShow();
     };
 
-    function getNodes() {
+    function getNodes(): HTMLElement[] {
         const nodes = document.querySelector('.tree')?.querySelector('ul')?.querySelector('li')?.querySelectorAll('.node');
         if (nodes === undefined) {
             throw new Error("nodes is undefined");
         }
-        return nodes;
+        return Array.from(nodes) as HTMLElement[];
     }
 
 	onMount(() => {
         const nodes = getNodes();
         calculateAndShow();
+        nodes.forEach(setupEventListeners);
         nodes.forEach(greyOutNode);
-		nodes.forEach(setupEventListeners);
 	});
 </script>
 
