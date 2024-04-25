@@ -25,20 +25,36 @@
         return el.classList.contains('node');
     }
 
+    function goHome(node: HTMLElement) {
+        // Put the content back to its original position
+        let initial = document.getElementById("top-box-" + node.textContent);
+        if (initial.textContent != "") {
+            console.error("Initial node is not empty! This is a bug.");
+        }
+        initial.style.display = "block";
+        initial.textContent = node.textContent;
+        node.textContent = "";
+    }
+
     function greyOutNode(node: HTMLElement) {
         let should = shouldBeGreyedOut(node);
         if (should) {
+            // Node should be greyed out
             node.style.borderColor = "red";
             node.style.backgroundColor = "lightpink";
             node.draggable = false;
-            node.textContent = " ";
+            if (node.textContent != "") {
+                goHome(node);
+            }
         } else {
+            // Node should not be greyed out (= its content can be changed)
             node.style.backgroundColor = "white";
             node.style.borderColor = "black";
             if (node.textContent === " ") {
                 node.textContent = "";
             }
             if (node.textContent !== "") {
+                // Node has content
                 node.draggable = true;
             }
         }
@@ -93,8 +109,14 @@
         let source = document.getElementById(source_id);
         if (source) {
             source.textContent = "";
+            if (source_id.startsWith("top-box-")) {
+                source.style.display = "none";
+            }
         }
         let target = event.target as HTMLElement;
+        if (target.textContent != "") {
+            goHome(target);
+        }
         target.textContent = data;
         getNodes().forEach(greyOutNode);
         calculateAndShow();

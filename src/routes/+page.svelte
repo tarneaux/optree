@@ -9,7 +9,7 @@ onMount(() => {
             el.addEventListener("dragstart", (event) => {
                 if (event instanceof DragEvent && event.target && event.target instanceof HTMLElement && event.dataTransfer) {
                     event.dataTransfer.setData("content", event.target.textContent || '')
-                    console.log("an element as been dragged : ",event.target.textContent)
+                    event.dataTransfer?.setData("element", event.target.id);
                 }
             })
         })
@@ -22,12 +22,12 @@ onMount(() => {
 <div class="tree-container">
     <div class="droppables">
         {#each Array.from(Array(10).keys()) as number}
-            <div class="box" draggable="true">{number}</div>
+            <div class="box" draggable="true" id="top-box-{number}">{number}</div>
         {/each}
     </div>
     <div class="droppables">
         {#each operators as operator}
-            <div class="box" draggable="true">{operator}</div>
+            <div class="box" draggable="true" id="top-box-{operator}">{operator}</div>
         {/each}
     </div>
     <Tree />
