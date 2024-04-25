@@ -199,7 +199,7 @@ right connector from last child*/
 	border: 1px solid #ccc;
 	padding: 5px 10px;
 	text-decoration: none;
-	font-size: 1.5rem;
+	font-size: 1.2rem;
 	display: inline-block;
 	
 	border-radius: 5px;
