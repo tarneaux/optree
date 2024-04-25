@@ -30,12 +30,16 @@
         if (should) {
             node.style.borderColor = "red";
             node.style.backgroundColor = "lightpink";
+            node.draggable = false;
             node.textContent = " ";
         } else {
             node.style.backgroundColor = "white";
             node.style.borderColor = "black";
             if (node.textContent === " ") {
                 node.textContent = "";
+            }
+            if (node.textContent !== "") {
+                node.draggable = true;
             }
         }
     }
@@ -60,14 +64,23 @@
         }
     }
 
-    function setupEventListeners(node: Element) {
+    function setupEventListeners(node: Element, index: number) {
         if (!(node instanceof HTMLElement)) {
             throw new Error("node is not an HTMLElement");
         }
         node.ondrop = onDrop;
+        // Add a unique id to the node to be able to identify it
+        node.id = "node-" + index.toString();
         node.ondragover = function(event: DragEvent) {
+            if (isGreyedOut(node)) {
+                return;
+            }
             event.preventDefault();
-        };
+        }
+        node.ondragstart = function(event: DragEvent) {
+            event.dataTransfer?.setData("content", event.target.textContent);
+            event.dataTransfer?.setData("element", event.target.id);
+        }
     }
 
     function onDrop(event: DragEvent) {
@@ -76,11 +89,12 @@
         if (data === undefined) {
             throw new Error("data is undefined");
         }
-        let target = event.target as HTMLElement;
-        if (isGreyedOut(target)) {
-            console.log("Cannot drop here, node is greyed out");
-            return;
+        let source_id = event.dataTransfer?.getData("element");
+        let source = document.getElementById(source_id);
+        if (source) {
+            source.textContent = "";
         }
+        let target = event.target as HTMLElement;
         target.textContent = data;
         getNodes().forEach(greyOutNode);
         calculateAndShow();
