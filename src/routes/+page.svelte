@@ -1,3 +1,6 @@
+<head>
+    <link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Nunito'>
+</head>
 <script lang=ts>
 import Tree from '$lib/Tree.svelte';
 import { onMount } from 'svelte';
@@ -22,9 +25,10 @@ function getRandomNumber(min: number, max: number) {
 
 </script>
 
+
 <div class="tree-container">
     <div>   
-        <p class="box" id="target_number">Target Number: {getRandomNumber(1, 100)}</p>
+        <p class="text-box" id="target_number">Target Number: {getRandomNumber(1, 100)}</p>
     </div>
 
     <div class="droppables">
@@ -40,16 +44,21 @@ function getRandomNumber(min: number, max: number) {
     <Tree />
 
     <div>
-        <p class="box" id="result" />
+        <p class="text-box" id="result" />
     </div>
     <div>
-        <p class="box" id="distance" />
+        <p class="text-box" id="distance" />
     </div>
 </div>
 
 
 
 <style>
+    @font-face {
+    font-family: 'Nunito';
+    src: url('https://fonts.googleapis.com/css?family=Nunito') format('truetype');
+}
+
 .tree-container {
     display: flex;
     flex-direction: column;
@@ -64,8 +73,17 @@ function getRandomNumber(min: number, max: number) {
     padding: 10px;
     margin-right: 10px;
     cursor: pointer;
+    font-family: 'Nunito';
 }
 
+.text-box {
+    border: 2px solid #000;
+    border-radius: 5px;
+    padding: 10px;
+    margin-right: 10px;
+    font-family: 'Nunito';
+
+}
 .droppables {
     display: flex;
     flex-direction: row;

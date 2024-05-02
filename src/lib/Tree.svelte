@@ -42,8 +42,7 @@
         let should = shouldBeGreyedOut(node);
         if (should) {
             // Node should be greyed out
-            node.style.borderColor = "red";
-            node.style.backgroundColor = "lightpink";
+            node.style.backgroundColor = "lightgrey";
             node.draggable = false;
             if (node.textContent != "") {
                 goHome(node);
