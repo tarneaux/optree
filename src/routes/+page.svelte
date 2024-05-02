@@ -1,6 +1,3 @@
-<head>
-    <link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Nunito'>
-</head>
 <script lang=ts>
 import Tree from '$lib/Tree.svelte';
 import { onMount } from 'svelte';
@@ -11,6 +8,8 @@ onMount(() => {
         Array.from(droppable.children).forEach((el) => {
             el.addEventListener("dragstart", (event) => {
                 if (event instanceof DragEvent && event.target && event.target instanceof HTMLElement && event.dataTransfer) {
+                    // play sound
+                    new Audio('/bloop.mp3').play();
                     event.dataTransfer.setData("content", event.target.textContent || '')
                     event.dataTransfer?.setData("element", event.target.id);
                 }

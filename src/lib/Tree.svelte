@@ -96,6 +96,7 @@
         }
         node.ondragstart = function(event: DragEvent) {
             if (event.target instanceof HTMLElement) {
+
                 event.dataTransfer?.setData("content", event.target.textContent ?? "");
                 event.dataTransfer?.setData("element", event.target.id);
             }
@@ -104,6 +105,7 @@
 
     function onDrop(event: DragEvent) {
         event.preventDefault();
+        new Audio('/pop.mp3').play();
         var data = event.dataTransfer?.getData("content");
         if (data === undefined) {
             throw new Error("data is undefined");
@@ -149,6 +151,7 @@
 .tree{
   width: max-content;
   overflow: hidden;
+  font-family: "Nunito";
 
 }
 
