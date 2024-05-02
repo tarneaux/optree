@@ -1,4 +1,4 @@
-<script>
+<script lang=ts>
 import Tree from '$lib/Tree.svelte';
 import { onMount } from 'svelte';
 import { operators } from '../lib/calculate.ts';
@@ -15,13 +15,20 @@ onMount(() => {
         })
     })
 })
+
+function getRandomNumber(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
 </script>
 
-
-
 <div class="tree-container">
+    <div>   
+        <p class="box" id="target_number">Target Number: {getRandomNumber(1, 100)}</p>
+    </div>
+
     <div class="droppables">
-        {#each Array.from(Array(10).keys()) as number}
+        {#each [getRandomNumber(1, 4), getRandomNumber(1, 6), getRandomNumber(1, 8), getRandomNumber(1, 12), getRandomNumber(1, 20)] as number}
             <div class="box" draggable="true" id="top-box-{number}">{number}</div>
         {/each}
     </div>
@@ -31,9 +38,12 @@ onMount(() => {
         {/each}
     </div>
     <Tree />
-    <div />
+
     <div>
         <p class="box" id="result" />
+    </div>
+    <div>
+        <p class="box" id="distance" />
     </div>
 </div>
 

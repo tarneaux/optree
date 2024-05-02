@@ -28,11 +28,13 @@
     function goHome(node: HTMLElement) {
         // Put the content back to its original position
         let initial = document.getElementById("top-box-" + node.textContent);
-        if (initial.textContent != "") {
-            console.error("Initial node is not empty! This is a bug.");
+        if (initial !== null) {
+            if (initial.textContent !== "") {
+                console.error("Initial node is not empty! This is a bug.");
+            }
+            initial.style.display = "block";
+            initial.textContent = node.textContent;
         }
-        initial.style.display = "block";
-        initial.textContent = node.textContent;
         node.textContent = "";
     }
 
@@ -94,8 +96,10 @@
             event.preventDefault();
         }
         node.ondragstart = function(event: DragEvent) {
-            event.dataTransfer?.setData("content", event.target.textContent);
-            event.dataTransfer?.setData("element", event.target.id);
+            if (event.target instanceof HTMLElement) {
+                event.dataTransfer?.setData("content", event.target.textContent ?? "");
+                event.dataTransfer?.setData("element", event.target.id);
+            }
         }
     }
 
@@ -106,11 +110,11 @@
             throw new Error("data is undefined");
         }
         let source_id = event.dataTransfer?.getData("element");
-        let source = document.getElementById(source_id);
-        if (source) {
+        let source = document.getElementById(source_id!);
+        if (source_id && source) {
+            if (/\d$/.test(source_id)) {
             source.textContent = "";
-            if (source_id.startsWith("top-box-")) {
-                source.style.display = "none";
+            source.style.display = "none";
             }
         }
         let target = event.target as HTMLElement;
