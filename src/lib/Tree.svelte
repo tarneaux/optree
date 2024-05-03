@@ -96,7 +96,6 @@
         }
         node.ondragstart = function(event: DragEvent) {
             if (event.target instanceof HTMLElement) {
-
                 event.dataTransfer?.setData("content", event.target.textContent ?? "");
                 event.dataTransfer?.setData("element", event.target.id);
             }
@@ -113,10 +112,15 @@
         let source_id = event.dataTransfer?.getData("element");
         let source = document.getElementById(source_id!);
         if (source_id && source) {
-            if (/\d$/.test(source_id)) {
-            source.textContent = "";
-            source.style.display = "none";
-            }
+            if (source_id.startsWith("top-box-")) {
+                if (/\d$/.test(source_id)) {
+                source.textContent = "";
+                source.style.display = "none";
+                }
+            } 
+            else {
+                source.textContent = "";
+            }   
         }
         let target = event.target as HTMLElement;
         if (target.textContent != "") {

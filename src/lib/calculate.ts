@@ -37,8 +37,6 @@ export function calculateAndShow() {
             result_text = "Résultat : " + result.toString();
             distance_text = "Distance : " + Math.abs(result - target_number).toString();    
         }
-        console.log(result_text);
-        console.log(distance_text);
         document.getElementById('distance')!.textContent = distance_text;
         document.getElementById('result')!.textContent = result_text;
 
