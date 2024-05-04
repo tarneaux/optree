@@ -1,3 +1,5 @@
+import { Houra } from './confetti';
+
 export const operators = ['+', '-', '*', '/'];
 
 function calculate(node: Element): number {
@@ -30,15 +32,34 @@ export function calculateAndShow() {
         const result = calculate(root);
         let result_text: string;
         let distance_text: string;
+        let distance = NaN;
         if (isNaN(result)) {
+            distance = target_number;
             result_text = "Arbre incomplet";
-            distance_text = "Distance : " + target_number.toString();
+            distance_text = "Distance : " + distance.toString();
         } else {
+            distance = Math.abs(result - target_number)
             result_text = "Résultat : " + result.toString();
-            distance_text = "Distance : " + Math.abs(result - target_number).toString();    
+            distance_text = "Distance : " + distance.toString();    
         }
-        document.getElementById('distance')!.textContent = distance_text;
-        document.getElementById('result')!.textContent = result_text;
+        const distanceElement = document.getElementById('distance')!;
+        const resultElement = document.getElementById('result')!;
+        distanceElement.textContent = distance_text;
+        if (distance === 0) {
+            distanceElement.style.animation = 'rainbow 2s linear'; // Add a rainbow animation
+            new Audio("/good_result.wav").play();
+            Houra();
+        } else {
+            distanceElement.style.animation = ''; // Remove the rainbow animation
+        }
+        resultElement.textContent = result_text;
+        console.log(result.toString());
+        if (result === target_number) {
+            resultElement.style.animation = 'rainbow 2s linear'; // Add a rainbow animation
+            
+        } else {
+            resultElement.style.animation = ''; // Remove the rainbow animation
+        }
 
     }
 }

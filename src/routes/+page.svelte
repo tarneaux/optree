@@ -53,10 +53,7 @@ function getRandomNumber(min: number, max: number) {
 
 
 <style>
-    @font-face {
-    font-family: 'Nunito';
-    src: url('https://fonts.googleapis.com/css?family=Nunito') format('truetype');
-}
+
 
 .tree-container {
     display: flex;
@@ -82,9 +79,11 @@ function getRandomNumber(min: number, max: number) {
     margin-right: 10px;
     font-family: 'Nunito';
 
-}
+  }
+    
 .droppables {
     display: flex;
     flex-direction: row;
 }
+
 </style>
