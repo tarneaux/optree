@@ -45,21 +45,22 @@ export function calculateAndShow() {
         const distanceElement = document.getElementById('distance')!;
         const resultElement = document.getElementById('result')!;
         distanceElement.textContent = distance_text;
+        resultElement.textContent = result_text;
+
         if (distance === 0) {
-            distanceElement.style.animation = 'rainbow 2s linear'; // Add a rainbow animation
+            
+            distanceElement.style.animation = "rainbow 2s"
+            resultElement.style.animation = "rainbow 2s"
+
             new Audio("/good_result.wav").play();
             Houra();
-        } else {
-            distanceElement.style.animation = ''; // Remove the rainbow animation
+        } 
+        else {
+            distanceElement.style.animation = "none"
+            resultElement.style.animation = "none"
+
         }
-        resultElement.textContent = result_text;
-        console.log(result.toString());
-        if (result === target_number) {
-            resultElement.style.animation = 'rainbow 2s linear'; // Add a rainbow animation
-            
-        } else {
-            resultElement.style.animation = ''; // Remove the rainbow animation
-        }
+    
 
     }
 }

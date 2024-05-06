@@ -86,4 +86,19 @@ function getRandomNumber(min: number, max: number) {
     flex-direction: row;
 }
 
+@keyframes -global-rainbow {
+		0% {color: black; border-color: black;}
+		5% {color: hsl(0, 100%, 50%); border-color: hsl(0, 100%, 50%);}
+		10% {color: hsl(36, 100%, 50%); border-color: hsl(36, 100%, 50%);}
+		20% {color: hsl(72, 100%, 50%); border-color: hsl(72, 100%, 50%);}
+		30% {color: hsl(108, 100%, 50%); border-color: hsl(108, 100%, 50%);}
+		40% {color: hsl(144, 100%, 50%); border-color: hsl(144, 100%, 50%);}
+		50% {color: hsl(180, 100%, 50%); border-color: hsl(180, 100%, 50%);}
+		60% {color: hsl(216, 100%, 50%); border-color: hsl(216, 100%, 50%);}
+		70% {color: hsl(252, 100%, 50%); border-color: hsl(252, 100%, 50%);}
+		80% {color: hsl(288, 100%, 50%); border-color: hsl(288, 100%, 50%);}
+		90% {color: hsl(324, 100%, 50%); border-color: hsl(324, 100%, 50%);}
+		95% {color: hsl(360, 100%, 50%); border-color: hsl(360, 100%, 50%);}
+		100% {color: black; border-color: black;}
+		}
 </style>
