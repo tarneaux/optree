@@ -42,7 +42,7 @@ function getArrayDifferentRandomNumber(){
 
 <div class="tree-container">
     <div>   
-        <p class="text-box" id="target_number">Target Number: {getRandomNumber(1, 100)}</p>
+        <p class="text-box" id="target_number">Objectif : {getRandomNumber(1, 100)}</p>
     </div>
 
     <div class="droppables">
