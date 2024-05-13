@@ -22,6 +22,21 @@ function getRandomNumber(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
+function getArrayDifferentRandomNumber(){
+    let arr: number[] = [];
+    let upper_bounds = [4,6,8,12,20]
+    upper_bounds.forEach(upper => {
+        while (true) {
+            let num = getRandomNumber(1, upper);
+            if (!arr.includes(num)) {
+                arr.push(num);
+                break;
+            }
+        }
+    });
+    return arr;
+}
+
 </script>
 
 
@@ -31,7 +46,7 @@ function getRandomNumber(min: number, max: number) {
     </div>
 
     <div class="droppables">
-        {#each [getRandomNumber(1, 4), getRandomNumber(1, 6), getRandomNumber(1, 8), getRandomNumber(1, 12), getRandomNumber(1, 20)] as number}
+        {#each getArrayDifferentRandomNumber() as number}
             <div class="box" draggable="true" id="top-box-{number}">{number}</div>
         {/each}
     </div>
