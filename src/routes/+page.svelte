@@ -75,6 +75,7 @@ function getArrayDifferentRandomNumber(){
 
 *{
     font-family: 'Nunito';
+    font-weight: 650;
 }
 
 .tree-container {
