@@ -20,16 +20,20 @@ function getRandomNumber(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function getNumbers(){
+function range(min, max) {
+    return [...Array(max-min).keys()].map(i => i + min);
+}
+
+function getNumbers() {
     let arr: number[] = [];
-    let upper_bounds = [4,6,8,12,20]
-    upper_bounds.forEach(upper => {
-        let num;
-        do {
-            num = getRandomNumber(1, upper);
-        } while (arr.includes(num))
-        arr.push(num);
-    });
+    let numbers = range(1, 21);
+    const upper_bounds = [4, 6, 8, 12, 20];
+    for (let i = 0; i < 5; i++) {
+        const index = getRandomNumber(1, upper_bounds[i]-i-1);
+        arr.push(numbers[index]);
+        numbers.splice(index, 1);
+    }
+    arr.sort((a, b) => {return a - b});
     return arr;
 }
 </script>
