@@ -1,11 +1,12 @@
 <div class="tree">
-<ul>
-<li>
-<div class="node"></div>
-	<ul><li><div class="node"></div><ul><li><div class="node"></div><ul><li><div class="node"></div><ul><li><div class="node"></div></li><li><div class="node"></div></li></ul></li><li><div class="node"></div><ul><li><div class="node"></div></li><li><div class="node"></div></li></ul></li></ul></li><li><div class="node"></div><ul><li><div class="node"></div><ul><li><div class="node"></div></li><li><div class="node"></div></li></ul></li><li><div class="node"></div><ul><li><div class="node"></div></li><li><div class="node"></div></li></ul></li></ul></li></ul></li><li><div class="node"></div><ul><li><div class="node"></div><ul><li><div class="node"></div><ul><li><div class="node"></div></li><li><div class="node"></div></li></ul></li><li><div class="node"></div><ul><li><div class="node"></div></li><li><div class="node"></div></li></ul></li></ul></li><li><div class="node"></div><ul><li><div class="node"></div><ul><li><div class="node"></div></li><li><div class="node"></div></li></ul></li><li><div class="node"></div><ul><li><div class="node"></div></li><li><div class="node"></div></li></ul></li></ul></li></ul></li></ul>
-</li>
-</ul>
+    <ul>
+        <li>
+            <div class="node"></div>
+            <ul><li><div class="node"></div><ul><li><div class="node"></div><ul><li><div class="node"></div><ul><li><div class="node"></div></li><li><div class="node"></div></li></ul></li><li><div class="node"></div><ul><li><div class="node"></div></li><li><div class="node"></div></li></ul></li></ul></li><li><div class="node"></div><ul><li><div class="node"></div><ul><li><div class="node"></div></li><li><div class="node"></div></li></ul></li><li><div class="node"></div><ul><li><div class="node"></div></li><li><div class="node"></div></li></ul></li></ul></li></ul></li><li><div class="node"></div><ul><li><div class="node"></div><ul><li><div class="node"></div><ul><li><div class="node"></div></li><li><div class="node"></div></li></ul></li><li><div class="node"></div><ul><li><div class="node"></div></li><li><div class="node"></div></li></ul></li></ul></li><li><div class="node"></div><ul><li><div class="node"></div><ul><li><div class="node"></div></li><li><div class="node"></div></li></ul></li><li><div class="node"></div><ul><li><div class="node"></div></li><li><div class="node"></div></li></ul></li></ul></li></ul></li></ul>
+        </li>
+    </ul>
 </div>
+
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { calculateAndShow, operators } from './calculate.ts';
@@ -152,11 +153,9 @@
 
 * {margin: 0; padding: 0;}
 
-.tree{
-  width: max-content;
-  overflow: hidden;
-  font-family: "Nunito";
-
+.tree {
+    width: max-content;
+    overflow: hidden;
 }
 
 .tree ul {
@@ -228,24 +227,20 @@ right connector from last child*/
 }
 
 .tree li .node {
-	border: 1px solid #ccc;
-	padding: 5px 10px;
-	text-decoration: none;
-	font-size: 1.2rem;
-	display: inline-block;
+    border: 1px solid #000;
+    border-radius: 5px;
+    padding: 0.5em;
+    text-align: center;
+    aspect-ratio: 1.618;
+    height: 1em;
+    display: inline-block;
 	
 	border-radius: 5px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 
-    border-width: 2px;
-    border-color: black;
-	
 	transition: all 0.5s;
 	-webkit-transition: all 0.5s;
 	-moz-transition: all 0.5s;
-
-    width: 1.5em;
-    height: 1.5em;
 }
 </style>
