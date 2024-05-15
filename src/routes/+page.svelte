@@ -49,8 +49,8 @@ function getNumbers(){
 
     <Tree />
 
-    <p class="text-box" id="target_number">Objectif : {getRandomNumber(1, 100)}</p>
-    <p class="text-box" id="result" />
+    <div class="text-box" id="target_number">Objectif : {getRandomNumber(1, 100)}</div>
+    <div class="text-box" id="result" />
 
     <button class="text-box" id="reload" onClick="window.location.reload();">Relancer les dés</button>
 </div>
