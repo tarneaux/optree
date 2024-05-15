@@ -26,13 +26,11 @@ function getArrayDifferentRandomNumber(){
     let arr: number[] = [];
     let upper_bounds = [4,6,8,12,20]
     upper_bounds.forEach(upper => {
-        while (true) {
-            let num = getRandomNumber(1, upper);
-            if (!arr.includes(num)) {
-                arr.push(num);
-                break;
-            }
-        }
+        let num;
+        do {
+            num = getRandomNumber(1, upper);
+        } while (arr.includes(num))
+        arr.push(num);
     });
     return arr;
 }
